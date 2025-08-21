@@ -13,7 +13,7 @@ export default function DocsPage() {
         {/* Show if user is NOT signed in */}
         <SignedOut>
           <div className="flex h-screen w-full items-center justify-center text-center text-2xl font-semibold text-white">
-            🚪 Please Sign in above to Continue!!
+            🚪 Please Sign in above to Continue!
           </div>
         </SignedOut>
 
