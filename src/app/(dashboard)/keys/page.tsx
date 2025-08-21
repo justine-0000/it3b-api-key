@@ -35,7 +35,7 @@ export default function KeysPage() {
         {/* ---------------------- SIGNED OUT MESSAGE ---------------------- */}
         <SignedOut>
           <div className="flex h-screen w-full items-center justify-center text-center text-2xl font-semibold text-white">
-            🚪 Please Sign in above to Continue!
+            🚪 Please Sign in above to Continue?!
           </div>
         </SignedOut>
 
@@ -182,7 +182,7 @@ export default function KeysPage() {
               <Link
                 className="font-medium underline text-blue-400 hover:text-indigo-300"
                 href="/docs"
-                
+
               >
                 Docs
               </Link>
