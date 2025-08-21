@@ -1,15 +1,37 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { BookMarked, KeyRound } from "lucide-react";
-import { TopNav } from "../../_components/topnav";
 
 export default function DocsPage() {
+  const router = useRouter();
+  const { isSignedIn } = useUser();
+
+  // Redirect signed-out users
+  useEffect(() => {
+    if (!isSignedIn) {
+      router.replace("/"); // go to Home for sign-in
+    }
+  }, [isSignedIn, router]);
+
+  if (!isSignedIn) return null; // Don't render anything until signed in
+
   return (
-    <div className="min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/bg1.jpg')" }}>
-      <TopNav />
-      <div className="backdrop-blur-sm bg-black/20 min-h-screen p-8 space-y-8">
+    <div className="relative min-h-screen">
+      {/* Full-page background */}
+      <div
+        className="fixed inset-0 bg-cover bg-center -z-10"
+        style={{ backgroundImage: "url('/bg1.jpg')" }}
+      />
+      {/* Optional overlay for readability */}
+      <div className="fixed inset-0 bg-black/30 -z-5" />
+
+      <div className="space-y-8 relative z-10 p-8">
+        {/* Top Toolbar */}
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-white flex items-center gap-2">
             <BookMarked /> API Guide
@@ -22,6 +44,7 @@ export default function DocsPage() {
           </Link>
         </div>
 
+        {/* Intro Section */}
         <div className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition">
           <div className="absolute inset-0 bg-cover bg-center filter blur-sm" style={{ backgroundImage: "url('/card1.jpg')" }} />
           <div className="absolute inset-0 bg-black/40" />
@@ -33,6 +56,7 @@ export default function DocsPage() {
           </div>
         </div>
 
+        {/* Tip Section */}
         <p className="text-center text-white">
           💡 Tip: You can always manage your keys in the{" "}
           <Link href="/keys" className="font-medium underline text-blue-400 hover:text-indigo-300">Key Dashboard</Link>.

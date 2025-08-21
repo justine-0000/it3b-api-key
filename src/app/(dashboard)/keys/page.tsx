@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { BookOpen, Plus } from "lucide-react";
@@ -9,21 +12,33 @@ import CopyButton from "~/components/copy-button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { Badge } from "~/components/ui/badge";
 import { Separator } from "~/components/ui/separator";
-import { TopNav } from "../../_components/topnav";
 
 export default function KeysPage() {
+  const router = useRouter();
+  const { isSignedIn } = useUser();
   const sampleApiKey = "hhjghkgkgghjgyjfyjdthfthdd";
 
-  return (
-    <div className="min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/bg1.jpg')" }}>
-      <TopNav />
-      <div className="backdrop-blur-sm bg-black/20 min-h-screen p-8 space-y-8">
+  // Redirect signed-out users
+  useEffect(() => {
+    if (!isSignedIn) router.replace("/");
+  }, [isSignedIn, router]);
 
+  if (!isSignedIn) return null;
+
+  return (
+    <div className="relative min-h-screen">
+      {/* Full-page background */}
+      <div
+        className="fixed inset-0 bg-cover bg-center -z-10"
+        style={{ backgroundImage: "url('/bg1.jpg')" }}
+      />
+      {/* Optional dark overlay for readability */}
+      <div className="fixed inset-0 bg-black/30 -z-5" />
+
+      <div className="space-y-8 relative z-10 p-8">
         {/* Top Toolbar */}
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-            🔑 API Key Manager
-          </h1>
+          <h1 className="text-3xl font-bold text-white flex items-center gap-2">🔑 API Key Manager</h1>
           <Link href="/docs">
             <Button variant="outline" className="flex items-center gap-2 rounded-lg border-gray-300 bg-white/80 text-base text-gray-700 shadow-sm hover:bg-blue-600 hover:text-white transition">
               <BookOpen className="h-5 w-5" />
