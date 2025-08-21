@@ -182,6 +182,7 @@ export default function KeysPage() {
               <Link
                 className="font-medium underline text-blue-400 hover:text-indigo-300"
                 href="/docs"
+                
               >
                 Docs
               </Link>
