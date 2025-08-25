@@ -11,14 +11,14 @@ export default function DocsPage() {
   const router = useRouter();
   const { isSignedIn } = useUser();
 
-  // Redirect signed-out users
+  
   useEffect(() => {
     if (!isSignedIn) {
-      router.replace("/"); // go to Home for sign-in
+      router.replace("/"); 
     }
   }, [isSignedIn, router]);
 
-  if (!isSignedIn) return null; // Don't render anything until signed in
+  if (!isSignedIn) return null; 
 
   return (
     <div className="relative min-h-screen">
@@ -27,11 +27,11 @@ export default function DocsPage() {
         className="fixed inset-0 bg-cover bg-center -z-10"
         style={{ backgroundImage: "url('/bg1.jpg')" }}
       />
-      {/* Optional overlay for readability */}
+      
       <div className="fixed inset-0 bg-black/30 -z-5" />
 
       <div className="space-y-8 relative z-10 p-8">
-        {/* Top Toolbar */}
+       
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-white flex items-center gap-2">
             <BookMarked /> API Guide

@@ -18,7 +18,7 @@ export default function KeysPage() {
   const { isSignedIn } = useUser();
   const sampleApiKey = "hhjghkgkgghjgyjfyjdthfthdd";
 
-  // Redirect signed-out users
+  
   useEffect(() => {
     if (!isSignedIn) router.replace("/");
   }, [isSignedIn, router]);
@@ -27,12 +27,12 @@ export default function KeysPage() {
 
   return (
     <div className="relative min-h-screen">
-      {/* Full-page background */}
+      
       <div
         className="fixed inset-0 bg-cover bg-center -z-10"
         style={{ backgroundImage: "url('/bg1.jpg')" }}
       />
-      {/* Optional dark overlay for readability */}
+      
       <div className="fixed inset-0 bg-black/30 -z-5" />
 
       <div className="space-y-8 relative z-10 p-8">
@@ -47,7 +47,7 @@ export default function KeysPage() {
           </Link>
         </div>
 
-        {/* Generate Key Card */}
+        
         <Card className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition">
           <div className="absolute inset-0 bg-cover bg-center filter blur-sm" style={{ backgroundImage: "url('/card1.jpg')" }} />
           <div className="absolute inset-0 bg-black/40" />
@@ -65,7 +65,7 @@ export default function KeysPage() {
           </div>
         </Card>
 
-        {/* New API Key Display */}
+       
         <Card className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition">
           <div className="absolute inset-0 bg-cover bg-center filter blur-sm" style={{ backgroundImage: "url('/card1.jpg')" }} />
           <div className="absolute inset-0 bg-black/40" />
@@ -116,6 +116,14 @@ export default function KeysPage() {
                         <Button variant="destructive" size="sm" className="rounded-md">Revoke</Button>
                       </TableCell>
                     </TableRow>
+                    {/* <TableRow>
+                      <TableCell
+                      colSpan={5}
+                      className="text-muted-foreground text-center text-sm"
+                      >
+                        No API Key yet
+                      </TableCell>
+                    </TableRow> */}
                   </TableBody>
                 </Table>
               </div>

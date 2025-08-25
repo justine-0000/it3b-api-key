@@ -20,8 +20,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
-      <html lang="en" className={`${geist.variable}`}>
-        <body className="bg-black text-white">
+     <html lang="en" className={geist.variable}>
+        <body
+          className="min-h-screen bg-cover bg-center text-yellow-100"
+          style={{ backgroundImage: "url('/bg1.jpg')" }}
+        >
           <TopNav />
           {children}
         </body>
@@ -29,3 +32,6 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
+
+
+     
