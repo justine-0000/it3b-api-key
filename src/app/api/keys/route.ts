@@ -5,13 +5,13 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = (await req.json()) as unknown;
+    const body = await req.json();
     const { name } = CreateKeySchema.parse(body);
     const created = await insertKey(name);
     return NextResponse.json(created, { status: 201 });
   } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : "Invalid request";
-    return NextResponse.json({ error: message }, { status: 400 });
+    const msg = e instanceof Error ? e.message : "Invalid request";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 }
 
@@ -35,7 +35,7 @@ export async function DELETE(req: NextRequest) {
     if (!ok) return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json({ success: true });
   } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : "Invalid request";
-    return NextResponse.json({ error: message }, { status: 400 });
+    const msg = e instanceof Error ? e.message : "Invalid request";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 }

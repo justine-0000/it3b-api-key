@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
@@ -27,13 +27,7 @@ export default function KeysPage() {
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<KeyItem[]>([]);
 
-  const load = useCallback(async () => {
-    const res = await fetch("/api/keys", { cache: "no-store" });
-    const data: any = await res.json();
-    setItems(data.items ?? []);
-  }, []);
-
-  const createKey = useCallback(async () => {
+  async function createKey() {
     setLoading(true);
     try {
       const res = await fetch("/api/keys", {
@@ -41,28 +35,34 @@ export default function KeysPage() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ name }),
       });
-      const data: any = await res.json();
+      const data = (await res.json()) as { key: string; id: string; [k: string]: unknown };
       if (res.ok) {
         setJustCreated({ key: data.key, id: data.id });
-        void load();
+        await load();
       } else {
-        alert(data.error ?? "Failed to create key");
+        alert((data.error as string) ?? "Failed to create key");
       }
     } finally {
       setLoading(false);
     }
-  }, [name, load]);
+  }
 
-  const revokeKey = useCallback(async (id: string) => {
+  async function load() {
+    const res = await fetch("/api/keys", { cache: "no-store" });
+    const data = (await res.json()) as { items?: KeyItem[] };
+    setItems(data.items ?? []);
+  }
+
+  async function revokeKey(id: string) {
     const res = await fetch(`/api/keys?keyId=${id}`, { method: "DELETE" });
-    const data: any = await res.json();
+    const data = (await res.json()) as { error?: string; success?: boolean };
     if (!res.ok) alert(data.error ?? "Failed to revoke key");
-    void load();
-  }, [load]);
+    await load();
+  }
 
   useEffect(() => {
-    void load();
-  }, [load]);
+    load();
+  }, []);
 
   const router = useRouter();
   const { isSignedIn } = useUser();
@@ -79,7 +79,6 @@ export default function KeysPage() {
       <div className="fixed inset-0 bg-black/30 -z-5" />
 
       <div className="space-y-8 relative z-10 p-8">
-        {/* Top Toolbar */}
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-white flex items-center gap-2">🔑 API Key Manager</h1>
           <Link href="/docs">
@@ -93,9 +92,7 @@ export default function KeysPage() {
           </Link>
         </div>
 
-        {/* First Two Cards - Left / Right */}
         <div className="flex flex-wrap justify-between gap-8">
-          {/* Create Key Card - Left */}
           <Card className="w-full md:w-[48%] relative rounded-2xl overflow-hidden shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300">
             <div className="absolute inset-0 bg-cover bg-center filter blur-sm" style={{ backgroundImage: "url('/card1.jpg')" }} />
             <div className="absolute inset-0 bg-black/40" />
@@ -122,7 +119,6 @@ export default function KeysPage() {
             </div>
           </Card>
 
-          {/* Newly Created Key Card - Right */}
           <Card className="w-full md:w-[48%] relative rounded-2xl overflow-hidden shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300">
             <div className="absolute inset-0 bg-cover bg-center filter blur-sm" style={{ backgroundImage: "url('/card1.jpg')" }} />
             <div className="absolute inset-0 bg-black/40" />
@@ -146,7 +142,6 @@ export default function KeysPage() {
           </Card>
         </div>
 
-        {/* Keys List Card - Full Width */}
         <Card className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition">
           <div className="absolute inset-0 bg-cover bg-center filter blur-sm" style={{ backgroundImage: "url('/card-bg3.jpg')" }} />
           <div className="absolute inset-0 bg-black/30" />
@@ -181,7 +176,7 @@ export default function KeysPage() {
                             size="sm"
                             className="rounded-md"
                             disabled={row.revoked}
-                            onClick={() => void revokeKey(row.id)}
+                            onClick={() => revokeKey(row.id)}
                           >
                             Revoke
                           </Button>
