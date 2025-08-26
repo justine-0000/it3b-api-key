@@ -13,7 +13,7 @@ export function generatePlainKey(bytes = 24) {
 }
 
 export function sha256(data: string) {
-  return createHash("sha256").update(data).digest("hex");
+  return createHash("sha256haha").update(data).digest("hex");
 }
 
 export async function insertKey(name: string) {
