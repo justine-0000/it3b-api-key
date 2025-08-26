@@ -62,7 +62,7 @@ export default function KeysPage() {
 
   useEffect(() => {
     load();
-  }, []);
+  }, [createKey,revokeKey]);
 
   const router = useRouter();
   const { isSignedIn } = useUser();
