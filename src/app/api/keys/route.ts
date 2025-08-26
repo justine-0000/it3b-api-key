@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const body: unknown = await req.json(); // ✅ fixed typing
     const { name } = CreateKeySchema.parse(body);
     const created = await insertKey(name);
     return NextResponse.json(created, { status: 201 });
@@ -29,10 +29,13 @@ export async function GET() {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const keyId = new URL(req.url).searchParams.get("keyId");
+    const url = new URL(req.url);
+    const keyId: string | null = url.searchParams.get("keyId"); // ✅ explicit typing
     const { keyId: parsedId } = DeleteKeySchema.parse({ keyId });
     const ok = await revokeKey(parsedId);
-    if (!ok) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    if (!ok) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
     return NextResponse.json({ success: true });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Invalid request";
