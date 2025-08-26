@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
@@ -27,7 +27,13 @@ export default function KeysPage() {
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<KeyItem[]>([]);
 
-  async function createKey() {
+  const load = useCallback(async () => {
+    const res = await fetch("/api/keys", { cache: "no-store" });
+    const data: any = await res.json();
+    setItems(data.items ?? []);
+  }, []);
+
+  const createKey = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/keys", {
@@ -35,34 +41,28 @@ export default function KeysPage() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ name }),
       });
-      const data = await res.json();
+      const data: any = await res.json();
       if (res.ok) {
         setJustCreated({ key: data.key, id: data.id });
-        await load();
+        void load();
       } else {
         alert(data.error ?? "Failed to create key");
       }
     } finally {
       setLoading(false);
     }
-  }
+  }, [name, load]);
 
-  async function load() {
-    const res = await fetch("/api/keys", { cache: "no-store" });
-    const data = await res.json();
-    setItems(data.items ?? []);
-  }
-
-  async function revokeKey(id: string) {
+  const revokeKey = useCallback(async (id: string) => {
     const res = await fetch(`/api/keys?keyId=${id}`, { method: "DELETE" });
-    const data = await res.json();
+    const data: any = await res.json();
     if (!res.ok) alert(data.error ?? "Failed to revoke key");
-    await load();
-  }
+    void load();
+  }, [load]);
 
   useEffect(() => {
-    load();
-  }, [createKey, revokeKey]);
+    void load();
+  }, [load]);
 
   const router = useRouter();
   const { isSignedIn } = useUser();
@@ -181,7 +181,7 @@ export default function KeysPage() {
                             size="sm"
                             className="rounded-md"
                             disabled={row.revoked}
-                            onClick={() => revokeKey(row.id)}
+                            onClick={() => void revokeKey(row.id)}
                           >
                             Revoke
                           </Button>

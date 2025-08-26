@@ -1,4 +1,4 @@
-import { createHash, randomBytes } from "crypto";
+import { createHash, randomBytes, randomUUID } from "crypto";
 import { db } from "./db";              
 import { apiKeys } from "./db/schema"; 
 import { desc, eq } from "drizzle-orm";
@@ -19,26 +19,20 @@ export function sha256(data: string) {
 export async function insertKey(name: string) {
   const { key, last4 } = generatePlainKey();
   const hashed = sha256(key);
-  const id = crypto.randomUUID();
+  const id = randomUUID();
 
   await db.insert(apiKeys).values({ id, name, hashedKey: hashed, last4 }); 
   return { id, name, key, last4 } as const;
 }
 
-export async function listKeys(){
-    return db.select().from(apiKeys).orderBy(desc(apiKeys.createdAt));
-    //  return db
-    //  .select()
-    //  .from(apiKeys)
-    //  .where(eq(apiKeys.revoked, false))
-    //  .orderBy(desc(apiKeys.createdAt));
+export async function listKeys() {
+  return db.select().from(apiKeys).orderBy(desc(apiKeys.createdAt));
 }
 
-export async function revokeKey(id: string){
-    const res = await db
+export async function revokeKey(id: string) {
+  const res = await db
     .update(apiKeys)
-    .set({ revoked: true})
+    .set({ revoked: true })
     .where(eq(apiKeys.id, id));
-    return (res.rowCount ?? 0) > 0;
+  return (res.rowCount ?? 0) > 0;
 }
-
