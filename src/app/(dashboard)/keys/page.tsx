@@ -60,8 +60,9 @@ export default function KeysPage() {
     await load();
   }
 
+  // Fixed floating promise by using void
   useEffect(() => {
-    load();
+    void load();
   }, []);
 
   const router = useRouter();
@@ -101,7 +102,7 @@ export default function KeysPage() {
                 <CardTitle className="text-xl font-semibold text-white">Generate API Key</CardTitle>
                 <Button
                   className="flex items-center gap-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
-                  onClick={createKey}
+                  onClick={() => void createKey()}
                   disabled={loading}
                 >
                   <Plus className="h-5 w-5" />
@@ -176,7 +177,7 @@ export default function KeysPage() {
                             size="sm"
                             className="rounded-md"
                             disabled={row.revoked}
-                            onClick={() => revokeKey(row.id)}
+                            onClick={() => void revokeKey(row.id)}
                           >
                             Revoke
                           </Button>
