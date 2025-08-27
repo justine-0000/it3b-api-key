@@ -11,7 +11,7 @@ import { pgTableCreator } from "drizzle-orm/pg-core";
 
 export const createTable = pgTableCreator((name) => `it3b-api-key_${name}`);
 
-export const apiKeys = createTable("api_key", (d) => ({
+export const apiKeys = createTable("api_keys", (d) => ({
   id: d.text("id").primaryKey(), 
   name: d.varchar("name", { length: 256 }).notNull(),
   hashedKey: d.text("hashed_key").notNull(),
