@@ -34,18 +34,32 @@ export default function DocsPage() {
       }
 
       setOut(JSON.stringify(data, null, 2));
-    } catch (err: any) {
-      setOut(`Request failed: ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setOut(`Request failed: ${err.message}`);
+      } else {
+        setOut("Request failed: Unknown error");
+      }
     }
   }
 
   async function runPOST() {
-    const res = await fetch(`${baseUrl}/api/echo`, {
-      method: "POST",
-      headers: { "x-api-key": key, "content-type": "application/json" },
-      body: JSON.stringify({ postBody }),
-    });
-    setOut(JSON.stringify(await res.json(), null, 2));
+    try {
+      const res = await fetch(`${baseUrl}/api/echo`, {
+        method: "POST",
+        headers: { "x-api-key": key, "content-type": "application/json" },
+        body: JSON.stringify({ postBody }),
+      });
+
+      const data = await res.json();
+      setOut(JSON.stringify(data, null, 2));
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setOut(`Request failed: ${err.message}`);
+      } else {
+        setOut("Request failed: Unknown error");
+      }
+    }
   }
 
   const router = useRouter();
@@ -85,22 +99,21 @@ export default function DocsPage() {
           </Link>
         </div>
 
-        {/* Authentication (Left) + GET (Right) */}
+        {/* Authentication & Base URL */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Authentication Card */}
           <Card
             className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
             style={{ backgroundImage: "url('/card1.jpg')" }}
           >
             <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
-            <div className="relative p-6 rounded-xl space-y-4">
+            <div className="relative p-4 rounded-xl">
               <CardHeader>
                 <CardTitle>How Authentication Works</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <p>
-                  Authenticate using the <code>x-api-key</code> header. Create a key in{" "}
-                  <code>/keys</code> and store it securely.
+                  Authenticate using the <code>x-api-key</code> header. Create a key
+                  in <code>/keys</code> and store it securely.
                 </p>
                 <Separator />
                 <div>
@@ -113,13 +126,12 @@ export default function DocsPage() {
             </div>
           </Card>
 
-          {/* GET /api/ping Card */}
           <Card
             className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
             style={{ backgroundImage: "url('/card1.jpg')" }}
           >
             <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
-            <div className="relative p-6 rounded-xl space-y-4">
+            <div className="relative p-4 rounded-xl">
               <CardHeader>
                 <CardTitle>GET /api/ping</CardTitle>
               </CardHeader>
@@ -144,7 +156,7 @@ ${baseUrl}/api/ping`}</code>
           style={{ backgroundImage: "url('/card1.jpg')" }}
         >
           <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
-          <div className="relative p-6 rounded-xl space-y-4">
+          <div className="relative p-4 rounded-xl">
             <CardHeader>
               <CardTitle>POST /api/echo</CardTitle>
             </CardHeader>
@@ -180,7 +192,6 @@ ${baseUrl}/api/echo`}</code>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-5 text-lg">
-              {/* API Key Input */}
               <Input
                 placeholder="Paste your API Key (sk_...)"
                 value={key}
@@ -188,7 +199,6 @@ ${baseUrl}/api/echo`}</code>
                 className="text-lg p-3 rounded-lg"
               />
 
-              {/* Buttons */}
               <div className="flex flex-wrap gap-3">
                 <Button onClick={runGET} className="text-lg px-6 py-3 rounded-xl">
                   Test GET /api/ping
@@ -202,7 +212,6 @@ ${baseUrl}/api/echo`}</code>
                 </Button>
               </div>
 
-              {/* POST Body */}
               <Label className="text-lg font-semibold">POST body (JSON)</Label>
               <Textarea
                 rows={5}
@@ -211,7 +220,6 @@ ${baseUrl}/api/echo`}</code>
                 className="text-base p-4 rounded-lg bg-gray-100 text-black"
               />
 
-              {/* Response */}
               <Label className="text-lg font-semibold">Response</Label>
               <Textarea
                 readOnly
