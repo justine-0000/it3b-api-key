@@ -26,9 +26,9 @@ export default function DocsPage() {
         headers: { "x-api-key": key },
       });
 
-      let data;
+      let data: unknown;
       try {
-        data = await res.json();
+        data = (await res.json()) as unknown;
       } catch {
         data = { error: "No JSON returned", status: res.status };
       }
@@ -51,7 +51,7 @@ export default function DocsPage() {
         body: JSON.stringify({ postBody }),
       });
 
-      const data = await res.json();
+      const data: unknown = await res.json();
       setOut(JSON.stringify(data, null, 2));
     } catch (err: unknown) {
       if (err instanceof Error) {
