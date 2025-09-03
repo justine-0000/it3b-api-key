@@ -133,7 +133,7 @@ export default function KeysPage() {
                     <p className="text-sm text-gray-200">Here is your API Key (visible once):</p>
                     <div className="mt-2 flex items-center gap-2 rounded-md bg-white/90 p-2">
                       <code className="break-all font-mono text-sm text-gray-900">{justCreated.key}</code>
-                      <CopyButton value={justCreated.key} />w3
+                      <CopyButton value={justCreated.key} />
                     </div>
                     <p className="mt-2 text-xs text-gray-300">💡 Save this key securely. You won’t be able to see it again.</p>
                   </>

@@ -1,4 +1,7 @@
+import { eq } from "drizzle-orm";
 import type { NextRequest } from "next/server";
+import { db } from "~/server/db";
+import { apiKeys } from "~/server/db/schema";
 import { verifyKey } from "~/server/key";
 
 export async function POST(req: NextRequest) {
@@ -9,10 +12,20 @@ export async function POST(req: NextRequest) {
       return Response.json({error: result.reason}, {status: 401});
     }
     
-    const body = await req.json().catch(() => ({}));
+   const body = await req.json();
+//    const body = JSON.stringify();
 
-    return Response.json(
-      {ok: true, message: "Hello POST",received: body, keyId: result.keyId},
-      {status: 200},
+   const getName = await db
+        .select({id: apiKeys.id, name: apiKeys.name})
+        .from(apiKeys)
+        .where(eq(apiKeys.name, body.postBody));
+
+    return Response.json({
+        ok: true,
+        message: "Hello POST",
+        received: getName,
+        keyId: result.keyId,
+    },
+    {status: 200},
     );
 }

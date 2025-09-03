@@ -18,7 +18,7 @@ const baseUrl =
 export default function DocsPage() {
   const [key, setKey] = useState("");
   const [out, setOut] = useState("");
-  const [postBody, setPostBody] = useState('');
+  const [postBody, setPostBody] = useState("");
 
   async function runGET() {
     try {
@@ -39,11 +39,11 @@ export default function DocsPage() {
     }
   }
 
-  async function runPOST(){
-    const res = await fetch (`${baseUrl}/api/echo`,{
-    method: "POST",
-    headers:{ "x-api-key": key, "content-type": "application/json"},
-    body: JSON.stringify({ postBody }),
+  async function runPOST() {
+    const res = await fetch(`${baseUrl}/api/echo`, {
+      method: "POST",
+      headers: { "x-api-key": key, "content-type": "application/json" },
+      body: JSON.stringify({ postBody }),
     });
     setOut(JSON.stringify(await res.json(), null, 2));
   }
@@ -69,6 +69,7 @@ export default function DocsPage() {
       <div className="fixed inset-0 bg-black/30 -z-5" />
 
       <div className="space-y-8 relative z-10 p-8">
+        {/* Header */}
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-white flex items-center gap-2">
             <BookMarked /> API Guide
@@ -84,26 +85,45 @@ export default function DocsPage() {
           </Link>
         </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0">
-            <CardTitle>How Authentication Works</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p>
-              Authenticate using the <code>x-api-key</code> header. Create a key
-              in <code>/keys</code> and store it securely.
-            </p>
-            <Separator />
-            <div>
-              <h3 className="font-semibold">Base URL</h3>
-              <pre className="overflow-x-auto">
-                <code>{baseUrl + "/api"}</code>
-              </pre>
+        {/* Authentication (Left) + GET (Right) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Authentication Card */}
+          <Card
+            className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
+            style={{ backgroundImage: "url('/card1.jpg')" }}
+          >
+            <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
+            <div className="relative p-6 rounded-xl space-y-4">
+              <CardHeader>
+                <CardTitle>How Authentication Works</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p>
+                  Authenticate using the <code>x-api-key</code> header. Create a key in{" "}
+                  <code>/keys</code> and store it securely.
+                </p>
+                <Separator />
+                <div>
+                  <h3 className="font-semibold">Base URL</h3>
+                  <pre className="overflow-x-auto">
+                    <code>{baseUrl + "/api"}</code>
+                  </pre>
+                </div>
+              </CardContent>
             </div>
-            <Separator />
-            <div className="flex flex-col gap-4">
-              <div>
-                <h3 className="font-semibold">GET /api/ping</h3>
+          </Card>
+
+          {/* GET /api/ping Card */}
+          <Card
+            className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
+            style={{ backgroundImage: "url('/card1.jpg')" }}
+          >
+            <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
+            <div className="relative p-6 rounded-xl space-y-4">
+              <CardHeader>
+                <CardTitle>GET /api/ping</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
                 <pre className="overflow-x-auto text-sm">
                   <code>{`curl -H 'x-api-key: <YOUR_KEY>' \\
 ${baseUrl}/api/ping`}</code>
@@ -113,54 +133,94 @@ ${baseUrl}/api/ping`}</code>
   headers: { 'x-api-key': process.env.MY_KEY! }
 });`}</code>
                 </pre>
-              </div>
-              <Separator />
-              <div>
-                <h3 className="font-semibold">POST /api/echo</h3>
-                <pre className="overflow-x-auto text-sm">
-                  <code>{`curl -X POST \\
+              </CardContent>
+            </div>
+          </Card>
+        </div>
+
+        {/* POST /api/echo */}
+        <Card
+          className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
+          style={{ backgroundImage: "url('/card1.jpg')" }}
+        >
+          <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
+          <div className="relative p-6 rounded-xl space-y-4">
+            <CardHeader>
+              <CardTitle>POST /api/echo</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <pre className="overflow-x-auto text-sm">
+                <code>{`curl -X POST \\
 -H 'x-api-key: <YOUR_KEY>' \\
 -H 'content-type: application/json' \\
 -d '{"hello":"world"}' \\
 ${baseUrl}/api/echo`}</code>
-                </pre>
-                <pre className="overflow-x-auto text-sm">
-                  <code>{`const r = await fetch('${baseUrl}/api/echo', {
+              </pre>
+              <pre className="overflow-x-auto text-sm">
+                <code>{`const r = await fetch('${baseUrl}/api/echo', {
   method: 'POST',
   headers: { 'x-api-key': process.env.MY_KEY!, 'content-type': 'application/json' },
   body: JSON.stringify({ hello: 'world' })
 });`}</code>
-                </pre>
-              </div>
-            </div>
-          </CardContent>
+              </pre>
+            </CardContent>
+          </div>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Interactive Tester</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <Input
-              placeholder="Paste your API Key (sk_...) "
-              value={key}
-              onChange={(e) => setKey(e.target.value)}
-            />
-            <div className="flex flex-wrap gap-2">
-              <Button onClick={runGET}>Test GET /api/ping</Button>
-              <Button onClick={runPOST} variant="secondary">
-                Test POST /api/echo
+        {/* Interactive Tester */}
+        <Card
+          className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
+          style={{ backgroundImage: "url('/card1.jpg')" }}
+        >
+          <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
+          <div className="relative p-6 rounded-xl space-y-5">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold tracking-tight">
+                Interactive Tester
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5 text-lg">
+              {/* API Key Input */}
+              <Input
+                placeholder="Paste your API Key (sk_...)"
+                value={key}
+                onChange={(e) => setKey(e.target.value)}
+                className="text-lg p-3 rounded-lg"
+              />
+
+              {/* Buttons */}
+              <div className="flex flex-wrap gap-3">
+                <Button onClick={runGET} className="text-lg px-6 py-3 rounded-xl">
+                  Test GET /api/ping
                 </Button>
-            </div>
-            <Label className="text-sm font-medium">POST body (JSON)</Label>
-            <Textarea
-              rows={5}
-              value={postBody}
-              onChange={(e) => setPostBody(e.target.value)}
-            />
-            <Label className="text-sm font-medium">Response</Label>
-            <Textarea rows={10} readOnly value={out} />
-          </CardContent>
+                <Button
+                  onClick={runPOST}
+                  variant="secondary"
+                  className="text-lg px-6 py-3 rounded-xl"
+                >
+                  Test POST /api/echo
+                </Button>
+              </div>
+
+              {/* POST Body */}
+              <Label className="text-lg font-semibold">POST body (JSON)</Label>
+              <Textarea
+                rows={5}
+                value={postBody}
+                onChange={(e) => setPostBody(e.target.value)}
+                className="text-base p-4 rounded-lg bg-gray-100 text-black"
+              />
+
+              {/* Response */}
+              <Label className="text-lg font-semibold">Response</Label>
+              <Textarea
+                readOnly
+                value={out}
+                className="h-64 resize-y text-base p-4 font-mono rounded-lg bg-gray-100 text-black"
+                rows={16}
+              />
+            </CardContent>
+          </div>
         </Card>
       </div>
     </div>
