@@ -1,9 +1,8 @@
 import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, SignedOut } from "@clerk/nextjs";
 import { TopNav } from "./_components/topnav";
-import { ConditionalSignedOut } from "./_components/ConditionalSignedOut";
 import { Card, CardHeader, CardTitle, CardContent } from "~/components/ui/card";
 
 export const metadata: Metadata = {
@@ -23,8 +22,8 @@ export default function RootLayout({
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en" className={geist.variable}>
-        <body className="min-h-screen text-yellow-100 relative">
-          {/* Background with slight blur */}
+        <body className="min-h-screen text-yellow-100 relative flex flex-col">
+          {/* Background */}
           <div
             className="fixed inset-0 bg-cover bg-center blur-sm -z-10"
             style={{ backgroundImage: "url('/card2.jpg')" }}
@@ -34,9 +33,9 @@ export default function RootLayout({
           {/* Navbar */}
           <TopNav />
 
-          {/* Show cards only if SignedOut AND not on /keys or /docs */}
-          <ConditionalSignedOut>
-            <div className="flex flex-col items-center mt-6 px-4 space-y-6">
+          {/* Message + Cards (only if signed out) */}
+          <SignedOut>
+            <div className="flex flex-col items-center mt-6 px-4 space-y-6 transition-opacity duration-300">
               {/* Sign In Message */}
               <div className="text-center">
                 <p className="text-2xl font-bold text-white drop-shadow-lg">
@@ -47,9 +46,9 @@ export default function RootLayout({
                 </p>
               </div>
 
-              {/* First Big Card */}
+              {/* About This System Card */}
               <Card
-                className="relative max-w-3xl w-full text-white shadow-lg rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+                className="relative max-w-3xl w-full text-white shadow-lg rounded-2xl overflow-hidden"
                 style={{ backgroundImage: "url('/bg3.jpg')" }}
               >
                 <div className="absolute inset-0 bg-black/40" />
@@ -61,7 +60,7 @@ export default function RootLayout({
                   </CardHeader>
                   <CardContent className="text-lg leading-relaxed space-y-4 text-center">
                     <p>
-                      Welcome to our platform 🚀! This system is designed to help
+                      Welcome to our system 🚀! This platform is designed to help
                       you manage API keys securely, test endpoints, and interact
                       with data in real-time.
                     </p>
@@ -69,11 +68,10 @@ export default function RootLayout({
                 </div>
               </Card>
 
-              {/* Two Cards Side by Side */}
+              {/* Two Side Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
-                {/* Second Card */}
                 <Card
-                  className="relative w-full text-white shadow-lg rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+                  className="relative w-full text-white shadow-lg rounded-2xl overflow-hidden"
                   style={{ backgroundImage: "url('/bg3.jpg')" }}
                 >
                   <div className="absolute inset-0 bg-black/40" />
@@ -85,15 +83,13 @@ export default function RootLayout({
                     </CardHeader>
                     <CardContent className="text-sm leading-relaxed text-center">
                       Generate and manage your API keys safely. Your keys are
-                      encrypted, masked, and can be revoked anytime for complete
-                      control.
+                      encrypted, masked, and revocable anytime.
                     </CardContent>
                   </div>
                 </Card>
 
-                {/* Third Card */}
                 <Card
-                  className="relative w-full text-white shadow-lg rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+                  className="relative w-full text-white shadow-lg rounded-2xl overflow-hidden"
                   style={{ backgroundImage: "url('/bg3.jpg')" }}
                 >
                   <div className="absolute inset-0 bg-black/40" />
@@ -105,14 +101,13 @@ export default function RootLayout({
                     </CardHeader>
                     <CardContent className="text-sm leading-relaxed text-center">
                       Explore and test API endpoints in real-time using our
-                      built-in documentation tools, designed to make integration
-                      easy for developers.
+                      built-in documentation tools.
                     </CardContent>
                   </div>
                 </Card>
               </div>
             </div>
-          </ConditionalSignedOut>
+          </SignedOut>
 
           {children}
         </body>
