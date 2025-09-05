@@ -221,7 +221,7 @@ export default function KeysPage() {
         <Separator className="my-6" />
         <p className="text-center text-white">
           💡 Tip: Call secured endpoints with the{" "}
-          <code className="rounded bg-gray-200 px-1 py-0.5 font-mono text-sm">x-api-key</code>{" "}
+          <code className="rounded bg-gray-200 px-1 py-0.5 text-black font-mono text-sm">x-api-key</code>{" "}
           header. See{" "}
           <Link
             href="/docs"

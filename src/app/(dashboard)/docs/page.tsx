@@ -101,11 +101,12 @@ export default function DocsPage() {
 
         {/* Authentication & Base URL */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* First card */}
           <Card
-            className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
+            className="relative bg-cover bg-center text-white shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
             style={{ backgroundImage: "url('/bg4.jpg')" }}
           >
-            <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
+            <div className="absolute inset-0 bg-black/40" />
             <div className="relative p-4 rounded-xl">
               <CardHeader>
                 <CardTitle>How Authentication Works</CardTitle>
@@ -126,11 +127,12 @@ export default function DocsPage() {
             </div>
           </Card>
 
+          {/* Second card */}
           <Card
-            className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
+            className="relative bg-cover bg-center text-white shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
             style={{ backgroundImage: "url('/bg4.jpg')" }}
           >
-            <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
+            <div className="absolute inset-0 bg-black/40" />
             <div className="relative p-4 rounded-xl">
               <CardHeader>
                 <CardTitle>GET /api/ping</CardTitle>
@@ -150,12 +152,12 @@ ${baseUrl}/api/ping`}</code>
           </Card>
         </div>
 
-        {/* POST /api/echo */}
+        {/* Third card */}
         <Card
-          className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
+          className="relative bg-cover bg-center text-white shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
           style={{ backgroundImage: "url('/bg4.jpg')" }}
         >
-          <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
+          <div className="absolute inset-0 bg-black/40" />
           <div className="relative p-4 rounded-xl">
             <CardHeader>
               <CardTitle>POST /api/echo</CardTitle>
@@ -179,12 +181,12 @@ ${baseUrl}/api/echo`}</code>
           </div>
         </Card>
 
-        {/* Interactive Tester */}
+        {/* Interactive Tester (no hover) */}
         <Card
           className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
           style={{ backgroundImage: "url('/bg4.jpg')" }}
         >
-          <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
+          <div className="absolute inset-0 bg-black/40" />
           <div className="relative p-6 rounded-xl space-y-5">
             <CardHeader>
               <CardTitle className="text-2xl font-bold tracking-tight">
@@ -235,7 +237,7 @@ ${baseUrl}/api/echo`}</code>
         <Separator className="my-6" />
         <p className="text-center text-white">
           💡 Tip: Call secured endpoints with the{" "}
-          <code className="rounded bg-gray-200 px-1 py-0.5 font-mono text-sm">x-api-key</code>{" "}
+          <code className="rounded bg-gray-200 px-1 py-0.5 text-black font-mono text-sm">x-api-key</code>{" "}
           header. See{" "}
           <Link
             href="/keys"
