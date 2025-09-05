@@ -1,8 +1,9 @@
 import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, SignedOut } from "@clerk/nextjs";
 import { TopNav } from "./_components/topnav";
+import { Card, CardHeader, CardTitle, CardContent } from "~/components/ui/card";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -20,18 +21,104 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
-     <html lang="en" className={geist.variable}>
-        <body
-          className="min-h-screen bg-cover bg-center text-yellow-100"
-          style={{ backgroundImage: "url('/bg1.jpg')" }}
-        >
+      <html lang="en" className={geist.variable}>
+        <body className="min-h-screen text-yellow-100 relative">
+          {/* Background with slight blur */}
+          <div
+            className="fixed inset-0 bg-cover bg-center blur-sm -z-10"
+            style={{ backgroundImage: "url('/card2.jpg')" }}
+          />
+
+          {/* Optional darker overlay for readability */}
+          <div className="fixed inset-0 bg-black/30 -z-10" />
+
+          {/* Content */}
           <TopNav />
+
+          {/* Message + Cards for signed-out users */}
+          <SignedOut>
+            <div className="flex flex-col items-center mt-6 px-4 space-y-6">
+              {/* Sign In Message */}
+              <div className="text-center">
+                <p className="text-2xl font-bold text-white drop-shadow-lg">
+                  👆 Please Sign In
+                </p>
+                <p className="text-gray-200 text-sm mt-1">
+                  Access dashboard by signing in above.
+                </p>
+              </div>
+
+              {/* First Big Card */}
+              <Card
+                className="relative max-w-3xl w-full text-white shadow-lg rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+                style={{ backgroundImage: "url('/bg3.jpg')" }}
+              >
+                <div className="absolute inset-0 bg-black/40" /> {/* overlay */}
+                <div className="relative p-8">
+                  <CardHeader>
+                    <CardTitle className="text-2xl font-bold text-center">
+                      📖 About This System
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-lg leading-relaxed space-y-4 text-center">
+                    <p>
+                      Welcome to our platform 🚀! This system is designed to help
+                      you manage API keys securely, test endpoints, and interact
+                      with data in real-time.
+                    </p>
+                   
+                  </CardContent>
+                </div>
+              </Card>
+
+              {/* Two Cards Side by Side */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
+                {/* Second Card */}
+                <Card
+                  className="relative w-full text-white shadow-lg rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+                  style={{ backgroundImage: "url('/bg3.jpg')" }}
+                >
+                  <div className="absolute inset-0 bg-black/40" />
+                  <div className="relative p-6">
+                    <CardHeader>
+                      <CardTitle className="text-xl font-semibold text-center">
+                        🔑 Secure Access
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm leading-relaxed text-center">
+                      Generate and manage your API keys safely. Your keys are
+                      encrypted, masked, and can be revoked anytime for complete
+                      control.
+                    </CardContent>
+                  </div>
+                </Card>
+
+                {/* Third Card */}
+                <Card
+                  className="relative w-full text-white shadow-lg rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+                  style={{ backgroundImage: "url('/bg3.jpg')" }}
+                >
+                  <div className="absolute inset-0 bg-black/40" />
+                  <div className="relative p-6">
+                    <CardHeader>
+                      <CardTitle className="text-xl font-semibold text-center">
+                        📚 Interactive Docs
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm leading-relaxed text-center">
+                      Explore and test API endpoints in real-time using our
+                      built-in documentation tools, designed to make integration
+                      easy for developers.
+                    </CardContent>
+                  </div>
+                </Card>
+              </div>
+            </div>
+          </SignedOut>
+
           {children}
         </body>
       </html>
     </ClerkProvider>
   );
 }
-
-
-     
