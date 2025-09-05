@@ -60,7 +60,6 @@ export default function KeysPage() {
     await load();
   }
 
-  
   useEffect(() => {
     void load();
   }, []);
@@ -76,7 +75,10 @@ export default function KeysPage() {
 
   return (
     <div className="relative min-h-screen">
-      <div className="fixed inset-0 bg-cover bg-center -z-10" style={{ backgroundImage: "url('/bg1.jpg')" }} />
+      <div
+        className="fixed inset-0 bg-cover bg-center -z-10"
+        style={{ backgroundImage: "url('/card2.jpg')" }}
+      />
       <div className="fixed inset-0 bg-black/30 -z-5" />
 
       <div className="space-y-8 relative z-10 p-8">
@@ -95,7 +97,10 @@ export default function KeysPage() {
 
         <div className="flex flex-wrap justify-between gap-8">
           <Card className="w-full md:w-[48%] relative rounded-2xl overflow-hidden shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300">
-            <div className="absolute inset-0 bg-cover bg-center filter blur-sm" style={{ backgroundImage: "url('/card1.jpg')" }} />
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: "url('/bg4.jpg')" }}
+            />
             <div className="absolute inset-0 bg-black/40" />
             <div className="relative p-6">
               <CardHeader className="flex items-center justify-between">
@@ -121,7 +126,10 @@ export default function KeysPage() {
           </Card>
 
           <Card className="w-full md:w-[48%] relative rounded-2xl overflow-hidden shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300">
-            <div className="absolute inset-0 bg-cover bg-center filter blur-sm" style={{ backgroundImage: "url('/card1.jpg')" }} />
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: "url('/bg4.jpg')" }}
+            />
             <div className="absolute inset-0 bg-black/40" />
             <div className="relative p-6">
               <CardHeader>
@@ -135,7 +143,9 @@ export default function KeysPage() {
                       <code className="break-all font-mono text-sm text-gray-900">{justCreated.key}</code>
                       <CopyButton value={justCreated.key} />
                     </div>
-                    <p className="mt-2 text-xs text-gray-300">💡 Save this key securely. You won’t be able to see it again.</p>
+                    <p className="mt-2 text-xs text-gray-300">
+                      💡 Save this key securely. You won’t be able to see it again.
+                    </p>
                   </>
                 )}
               </CardContent>
@@ -144,7 +154,10 @@ export default function KeysPage() {
         </div>
 
         <Card className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition">
-          <div className="absolute inset-0 bg-cover bg-center filter blur-sm" style={{ backgroundImage: "url('/card-bg3.jpg')" }} />
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('/bg4.jpg')" }}
+          />
           <div className="absolute inset-0 bg-black/30" />
           <div className="relative p-6">
             <CardHeader>
@@ -169,7 +182,11 @@ export default function KeysPage() {
                         <TableCell className="font-mono text-sm text-gray-800">{row.masked}</TableCell>
                         <TableCell>{new Date(row.createdAt).toLocaleString()}</TableCell>
                         <TableCell>
-                          {row.revoked ? <Badge variant="secondary">Revoked</Badge> : <Badge>Active</Badge>}
+                          {row.revoked ? (
+                            <Badge variant="secondary">Revoked</Badge>
+                          ) : (
+                            <Badge>Active</Badge>
+                          )}
                         </TableCell>
                         <TableCell className="text-right">
                           <Button
@@ -186,7 +203,10 @@ export default function KeysPage() {
                     ))}
                     {items.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={5} className="text-muted-foreground text-center text-sm">
+                        <TableCell
+                          colSpan={5}
+                          className="text-muted-foreground text-center text-sm"
+                        >
                           No API Key yet
                         </TableCell>
                       </TableRow>
@@ -200,8 +220,15 @@ export default function KeysPage() {
 
         <Separator className="my-6" />
         <p className="text-center text-white">
-          💡 Tip: Call secured endpoints with the <code className="rounded bg-gray-200 px-1 py-0.5 font-mono text-sm">x-api-key</code> header. See{" "}
-          <Link href="/docs" className="font-medium underline text-blue-400 hover:text-indigo-300">Docs</Link>
+          💡 Tip: Call secured endpoints with the{" "}
+          <code className="rounded bg-gray-200 px-1 py-0.5 font-mono text-sm">x-api-key</code>{" "}
+          header. See{" "}
+          <Link
+            href="/docs"
+            className="font-medium underline text-blue-400 hover:text-indigo-300"
+          >
+            Docs
+          </Link>
         </p>
       </div>
     </div>

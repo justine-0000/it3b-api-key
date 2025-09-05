@@ -78,7 +78,7 @@ export default function DocsPage() {
       {/* Full-page background */}
       <div
         className="fixed inset-0 bg-cover bg-center -z-10"
-        style={{ backgroundImage: "url('/bg1.jpg')" }}
+        style={{ backgroundImage: "url('/card2.jpg')" }}
       />
       <div className="fixed inset-0 bg-black/30 -z-5" />
 
@@ -103,7 +103,7 @@ export default function DocsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card
             className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
-            style={{ backgroundImage: "url('/card1.jpg')" }}
+            style={{ backgroundImage: "url('/bg4.jpg')" }}
           >
             <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
             <div className="relative p-4 rounded-xl">
@@ -128,7 +128,7 @@ export default function DocsPage() {
 
           <Card
             className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
-            style={{ backgroundImage: "url('/card1.jpg')" }}
+            style={{ backgroundImage: "url('/bg4.jpg')" }}
           >
             <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
             <div className="relative p-4 rounded-xl">
@@ -153,7 +153,7 @@ ${baseUrl}/api/ping`}</code>
         {/* POST /api/echo */}
         <Card
           className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
-          style={{ backgroundImage: "url('/card1.jpg')" }}
+          style={{ backgroundImage: "url('/bg4.jpg')" }}
         >
           <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
           <div className="relative p-4 rounded-xl">
@@ -182,7 +182,7 @@ ${baseUrl}/api/echo`}</code>
         {/* Interactive Tester */}
         <Card
           className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
-          style={{ backgroundImage: "url('/card1.jpg')" }}
+          style={{ backgroundImage: "url('/bg4.jpg')" }}
         >
           <div className="absolute inset-0 backdrop-blur-sm bg-black/40" />
           <div className="relative p-6 rounded-xl space-y-5">
@@ -230,6 +230,20 @@ ${baseUrl}/api/echo`}</code>
             </CardContent>
           </div>
         </Card>
+
+        {/* Footer Tip */}
+        <Separator className="my-6" />
+        <p className="text-center text-white">
+          💡 Tip: Call secured endpoints with the{" "}
+          <code className="rounded bg-gray-200 px-1 py-0.5 font-mono text-sm">x-api-key</code>{" "}
+          header. See{" "}
+          <Link
+            href="/keys"
+            className="font-medium underline text-blue-400 hover:text-indigo-300"
+          >
+            Keys
+          </Link>
+        </p>
       </div>
     </div>
   );
