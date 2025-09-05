@@ -1,8 +1,9 @@
 import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
-import { ClerkProvider, SignedOut } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import { TopNav } from "./_components/topnav";
+import { ConditionalSignedOut } from "./_components/ConditionalSignedOut";
 import { Card, CardHeader, CardTitle, CardContent } from "~/components/ui/card";
 
 export const metadata: Metadata = {
@@ -28,15 +29,13 @@ export default function RootLayout({
             className="fixed inset-0 bg-cover bg-center blur-sm -z-10"
             style={{ backgroundImage: "url('/card2.jpg')" }}
           />
-
-          {/* Optional darker overlay for readability */}
           <div className="fixed inset-0 bg-black/30 -z-10" />
 
-          {/* Content */}
+          {/* Navbar */}
           <TopNav />
 
-          {/* Message + Cards for signed-out users */}
-          <SignedOut>
+          {/* Show cards only if SignedOut AND not on /keys or /docs */}
+          <ConditionalSignedOut>
             <div className="flex flex-col items-center mt-6 px-4 space-y-6">
               {/* Sign In Message */}
               <div className="text-center">
@@ -53,7 +52,7 @@ export default function RootLayout({
                 className="relative max-w-3xl w-full text-white shadow-lg rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
                 style={{ backgroundImage: "url('/bg3.jpg')" }}
               >
-                <div className="absolute inset-0 bg-black/40" /> {/* overlay */}
+                <div className="absolute inset-0 bg-black/40" />
                 <div className="relative p-8">
                   <CardHeader>
                     <CardTitle className="text-2xl font-bold text-center">
@@ -66,7 +65,6 @@ export default function RootLayout({
                       you manage API keys securely, test endpoints, and interact
                       with data in real-time.
                     </p>
-                   
                   </CardContent>
                 </div>
               </Card>
@@ -114,7 +112,7 @@ export default function RootLayout({
                 </Card>
               </div>
             </div>
-          </SignedOut>
+          </ConditionalSignedOut>
 
           {children}
         </body>
