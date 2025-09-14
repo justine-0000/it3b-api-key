@@ -13,7 +13,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { Label } from "~/components/ui/label";
 
 const baseUrl =
-  typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
+  typeof window !== "undefined" ? window.location.origin : "https://it3b-api-key-act6.vercel.app/";
 
 export default function DocsPage() {
   const [key, setKey] = useState("");
