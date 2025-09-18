@@ -1,0 +1,1 @@
+ALTER TABLE "museum-project_api_keysapi_keys" RENAME TO "museum-project_api_keys";

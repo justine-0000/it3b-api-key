@@ -1,64 +1,86 @@
-import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { insertKey, listKeys, revokeKey } from "~/server/key";
 import { CreateKeySchema, DeleteKeySchema } from "~/server/validation";
-import { NextResponse } from "next/server";
 
-// Define KeyRow type
-type KeyRow = {
-  id: string;
-  name: string;
-  last4: string;
-  createdAt: string;
-  revoked: boolean;
-};
-
-export async function POST(req: NextRequest) {
+// --------------------
+// GET: List all keys or fetch single key
+// --------------------
+export async function GET(req: Request) {
   try {
-    const body = (await req.json()) as { name: string };
-    const { name } = CreateKeySchema.parse(body);
-    const created = await insertKey(name);
-    return NextResponse.json(created, { status: 201 });
-  } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : "Invalid request";
-    return NextResponse.json({ error: msg }, { status: 400 }
-    );
+    const { searchParams } = new URL(req.url);
+    const keyId = searchParams.get("keyId");
+
+    const rows = await listKeys();
+
+    if (keyId) {
+      const row = rows.find((r) => r.id === keyId);
+      if (!row) return NextResponse.json({ error: "Key not found" }, { status: 404 });
+
+      return NextResponse.json({
+        id: row.id,
+        name: row.name,
+        period: row.period,
+        origin: row.origin,
+        value: row.value,
+        imageUrl: row.imageUrl,
+        masked: `sk_live_...${row.last4}`,
+        createdAt: row.createdAt,
+        revoked: !!row.revoked,
+      });
+    }
+
+    // No keyId → return all
+    const items = rows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      period: row.period,
+      origin: row.origin,
+      value: row.value,
+      imageUrl: row.imageUrl,
+      masked: `sk_live_...${row.last4}`,
+      createdAt: row.createdAt,
+      revoked: !!row.revoked,
+    }));
+
+    return NextResponse.json({ items });
+  } catch (err: any) {
+    console.error("GET /api/keys failed:", err);
+    return NextResponse.json({ error: "Failed to fetch keys" }, { status: 500 });
   }
 }
 
-export async function GET() {
-  const result = await listKeys();
-  
-  // Map safely to KeyRow[]
-  const rows: KeyRow[] = Array.isArray(result)
-    ? result.map((r) => ({
-        id: String(r.id),
-        name: String(r.name),
-        last4: String(r.last4),
-        createdAt: String(r.createdAt),
-        revoked: Boolean(r.revoked),
-      }))
-    : [];
+// --------------------
+// POST: Create a new artifact + key
+// --------------------
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const { name, period, origin, value, imageUrl } = CreateKeySchema.parse(body);
 
-  const items = rows.map((row) => ({
-    id: row.id,
-    name: row.name,
-    masked: `sk_live_...${row.last4}`,
-    createdAt: row.createdAt,
-    revoked: row.revoked,
-  }));
+    const created = await insertKey({ name, period, origin, value, imageUrl });
 
-  return NextResponse.json({ items });
+    return NextResponse.json(created, { status: 201 });
+  } catch (err: any) {
+    console.error("POST /api/keys failed:", err);
+    return NextResponse.json({ error: err.message ?? "Invalid request" }, { status: 400 });
+  }
 }
 
-export async function DELETE(req: NextRequest) {
+// --------------------
+// DELETE: Revoke a key
+// --------------------
+export async function DELETE(req: Request) {
   try {
-    const keyId = new URL(req.url).searchParams.get("keyId") ?? "";
+    const { searchParams } = new URL(req.url);
+    const keyId = searchParams.get("keyId");
     const { keyId: parsedId } = DeleteKeySchema.parse({ keyId });
+
     const ok = await revokeKey(parsedId);
     if (!ok) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
     return NextResponse.json({ success: true });
-  } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : "Invalid request";
-    return NextResponse.json({ error: msg }, { status: 400 });
+  } catch (err: any) {
+    console.error("DELETE /api/keys failed:", err);
+    return NextResponse.json({ error: err.message ?? "Invalid request" }, { status: 400 });
   }
 }

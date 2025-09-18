@@ -8,6 +8,34 @@
       "when": 1756125260755,
       "tag": "0000_perfect_richard_fisk",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1758160229935,
+      "tag": "0001_rich_maelstrom",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1758161800033,
+      "tag": "0002_heavy_the_professor",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1758162467610,
+      "tag": "0003_left_guardian",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1758162701967,
+      "tag": "0004_boring_lady_vermin",
+      "breakpoints": true
     }
   ]
 }
