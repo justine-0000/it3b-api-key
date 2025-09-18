@@ -43,8 +43,9 @@ export async function GET(req: Request) {
     }));
 
     return NextResponse.json({ items });
-  } catch (err: any) {
-    console.error("GET /api/keys failed:", err);
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Unknown error";
+    console.error("GET /api/keys failed:", errorMessage);
     return NextResponse.json({ error: "Failed to fetch keys" }, { status: 500 });
   }
 }
@@ -60,9 +61,10 @@ export async function POST(req: Request) {
     const created = await insertKey({ name, period, origin, value, imageUrl });
 
     return NextResponse.json(created, { status: 201 });
-  } catch (err: any) {
-    console.error("POST /api/keys failed:", err);
-    return NextResponse.json({ error: err.message ?? "Invalid request" }, { status: 400 });
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Invalid request";
+    console.error("POST /api/keys failed:", errorMessage);
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }
 
@@ -79,8 +81,9 @@ export async function DELETE(req: Request) {
     if (!ok) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
     return NextResponse.json({ success: true });
-  } catch (err: any) {
-    console.error("DELETE /api/keys failed:", err);
-    return NextResponse.json({ error: err.message ?? "Invalid request" }, { status: 400 });
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Invalid request";
+    console.error("DELETE /api/keys failed:", errorMessage);
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }

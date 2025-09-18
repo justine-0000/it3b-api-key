@@ -113,7 +113,7 @@ export default function KeysPage() {
       } else {
         alert(data.error ?? "Failed to create artifact key");
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
       alert("Failed to create key (see console)");
     } finally {
@@ -332,6 +332,7 @@ export default function KeysPage() {
           </Card>
 
           <Separator />
+
           <div className="rounded-xl bg-amber-50 border p-6">
             <div className="flex gap-3">
               <AlertCircle className="w-5 h-5 text-yellow-600" />

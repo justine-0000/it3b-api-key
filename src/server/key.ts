@@ -6,7 +6,7 @@ import { desc, eq } from "drizzle-orm";
 const KEY_PREFIX = process.env.KEY_PREFIX ?? "sk_live_";
 
 // 🔑 Generate plain API key
-export function generatePlainKey(bytes: number = 24) {
+export function generatePlainKey(bytes = 24) {
   const raw = randomBytes(bytes).toString("base64url");
   const key = `${KEY_PREFIX}${raw}`;
   const last4 = key.slice(-4);
