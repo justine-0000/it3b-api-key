@@ -21,16 +21,7 @@ export default function RootLayout({
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en" className={geist.variable}>
-        <body className="min-h-screen text-yellow-100 relative">
-          {/* Background without blur */}
-          <div
-            className="fixed inset-0 bg-cover bg-center -z-10"
-            style={{ backgroundImage: "url('/card2.jpg')" }}
-          />
-
-          {/* Optional darker overlay for readability */}
-          <div className="fixed inset-0 bg-black/30 -z-10" />
-
+        <body className="min-h-screen text-yellow-100 relative bg-black">
           {/* Content */}
           <TopNav />
           {children}
