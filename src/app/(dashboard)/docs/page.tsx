@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
-import { BookMarked, KeyRound } from "lucide-react";
+import { KeyRound } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
 import { Input } from "~/components/ui/input";
@@ -13,7 +13,9 @@ import { Textarea } from "~/components/ui/textarea";
 import { Label } from "~/components/ui/label";
 
 const baseUrl =
-  typeof window !== "undefined" ? window.location.origin : "https://it3b-api-key-act6.vercel.app/";
+  typeof window !== "undefined"
+    ? window.location.origin
+    : "https://it3b-api-key-act6.vercel.app/";
 
 export default function DocsPage() {
   const [key, setKey] = useState("");
@@ -22,7 +24,7 @@ export default function DocsPage() {
 
   async function runGET() {
     try {
-      const res = await fetch(`${baseUrl}/api/ping`, {
+      const res = await fetch(`${baseUrl}/api/echo`, {
         headers: { "x-api-key": key },
       });
 
@@ -43,11 +45,30 @@ export default function DocsPage() {
     }
   }
 
+  async function runOPTIONS() {
+     const res = await fetch(`${baseUrl}/api/echo`, {
+      method: "OPTIONS",
+      headers: {
+        Origin: "https://it3b-api-key-act6.vercel.app/",
+        "Access-Control-Request-Method": "POST",
+        "Access-Control-Request-Headers": "x-api-key, content-type",
+      },
+    });
+    setOut(`Status: ${res.status}\n`+
+      Array.from(res.headers.entries())
+      .map(([key,value]) => `${key}: ${value}`)
+      .join("\n"),
+    );
+  }
+
   async function runPOST() {
     try {
       const res = await fetch(`${baseUrl}/api/echo`, {
         method: "POST",
-        headers: { "x-api-key": key, "content-type": "application/json" },
+        headers: {
+          "x-api-key": key,
+          "content-type": "application/json",
+        },
         body: JSON.stringify({ postBody }),
       });
 
@@ -113,8 +134,8 @@ export default function DocsPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p>
-                  Authenticate using the <code>x-api-key</code> header. Create a key
-                  in <code>/keys</code> and store it securely.
+                  Authenticate using the <code>x-api-key</code> header. Create a
+                  key in <code>/keys</code> and store it securely.
                 </p>
                 <Separator />
                 <div>
@@ -181,7 +202,7 @@ ${baseUrl}/api/echo`}</code>
           </div>
         </Card>
 
-        {/* Interactive Tester (no hover) */}
+        {/* Interactive Tester */}
         <Card
           className="relative bg-cover bg-center text-white shadow-lg overflow-hidden"
           style={{ backgroundImage: "url('/bg4.jpg')" }}
@@ -203,7 +224,7 @@ ${baseUrl}/api/echo`}</code>
 
               <div className="flex flex-wrap gap-3">
                 <Button onClick={runGET} className="text-lg px-6 py-3 rounded-xl">
-                  Test GET /api/ping
+                  Test GET /api/echo
                 </Button>
                 <Button
                   onClick={runPOST}
@@ -211,6 +232,9 @@ ${baseUrl}/api/echo`}</code>
                   className="text-lg px-6 py-3 rounded-xl"
                 >
                   Test POST /api/echo
+                </Button>
+                <Button onClick={runOPTIONS} variant={"secondary"}>
+                  Test OPTIONS /api/echo
                 </Button>
               </div>
 
@@ -233,11 +257,12 @@ ${baseUrl}/api/echo`}</code>
           </div>
         </Card>
 
-        {/* Footer Tip */}
         <Separator className="my-6" />
         <p className="text-center text-white">
           💡 Tip: Call secured endpoints with the{" "}
-          <code className="rounded bg-gray-200 px-1 py-0.5 text-black font-mono text-sm">x-api-key</code>{" "}
+          <code className="rounded bg-gray-200 px-1 py-0.5 text-black font-mono text-sm">
+            x-api-key
+          </code>{" "}
           header. See{" "}
           <Link
             href="/keys"

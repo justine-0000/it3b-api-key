@@ -178,7 +178,7 @@ export default function KeysPage() {
               <span className="text-white font-medium">Museum Collection</span>
             </div>
             <h1 className="text-6xl font-black mb-4 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-              API KEYS (Artifacts)
+              COLLECTIONS (Artifacts)
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Create artifact entries with API keys using our modern management interface
