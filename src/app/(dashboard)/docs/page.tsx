@@ -28,11 +28,11 @@ export default function DocsPage() {
         headers: { "x-api-key": key },
       });
 
-      let data: unknown;
+      let data;
       try {
-        data = (await res.json()) as unknown;
+        data = await res.json();
       } catch {
-        data = { error: "No JSON returned", status: res.status };
+        data = { error: "Response not JSON", status: res.status };
       }
 
       setOut(JSON.stringify(data, null, 2));
@@ -46,7 +46,7 @@ export default function DocsPage() {
   }
 
   async function runOPTIONS() {
-     const res = await fetch(`${baseUrl}/api/echo`, {
+    const res = await fetch(`${baseUrl}/api/echo`, {
       method: "OPTIONS",
       headers: {
         Origin: "https://it3b-api-key-act6.vercel.app/",
@@ -54,10 +54,11 @@ export default function DocsPage() {
         "Access-Control-Request-Headers": "x-api-key, content-type",
       },
     });
-    setOut(`Status: ${res.status}\n`+
-      Array.from(res.headers.entries())
-      .map(([key,value]) => `${key}: ${value}`)
-      .join("\n"),
+    setOut(
+      `Status: ${res.status}\n` +
+        Array.from(res.headers.entries())
+          .map(([key, value]) => `${key}: ${value}`)
+          .join("\n")
     );
   }
 
@@ -72,7 +73,13 @@ export default function DocsPage() {
         body: JSON.stringify({ postBody }),
       });
 
-      const data: unknown = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        data = { error: "Response not JSON", status: res.status };
+      }
+
       setOut(JSON.stringify(data, null, 2));
     } catch (err: unknown) {
       if (err instanceof Error) {
