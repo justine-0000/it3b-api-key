@@ -294,10 +294,6 @@ export default function KeysPage() {
                 <thead>
                   <tr className="border-b border-gray-700">
                     <th className="text-left py-4 px-4 text-gray-300 font-semibold">Artifact</th>
-                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Period</th>
-                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Origin</th>
-                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Value</th>
-                    <th className="text-left py-4 px-4 text-gray-300 font-semibold">Image</th>
                     <th className="text-left py-4 px-4 text-gray-300 font-semibold">Key</th>
                     <th className="text-left py-4 px-4 text-gray-300 font-semibold">Created</th>
                     <th className="text-left py-4 px-4 text-gray-300 font-semibold">Status</th>
@@ -308,18 +304,6 @@ export default function KeysPage() {
                   {items.map((row) => (
                     <tr key={row.id} className="border-b border-gray-800 hover:bg-white/5 transition-all duration-300">
                       <td className="py-4 px-4 text-white">{row.name}</td>
-                      <td className="py-4 px-4 text-gray-300">{row.period}</td>
-                      <td className="py-4 px-4 text-gray-300">{row.origin}</td>
-                      <td className="py-4 px-4 text-green-400">${row.value}</td>
-                      <td className="py-4 px-4">
-                        {row.imageUrl ? (
-                          <img src={row.imageUrl} alt={row.name} className="h-12 w-12 object-cover rounded-xl border border-gray-700" />
-                        ) : (
-                          <div className="h-12 w-12 bg-gray-800 flex items-center justify-center rounded-xl border border-gray-700">
-                            <Camera className="text-gray-500" size={16} />
-                          </div>
-                        )}
-                      </td>
                       <td className="py-4 px-4 font-mono text-sm text-gray-400">{row.masked}</td>
                       <td className="py-4 px-4 text-gray-300">{new Date(row.createdAt).toLocaleString()}</td>
                       <td className="py-4 px-4">
