@@ -186,7 +186,7 @@ export default function KeysPage() {
             <Link href={"/docs"} className="inline-block mt-6">
               <Button variant="outline" className="flex items-center gap-2 bg-white/5 border-gray-600 text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-300">
                 <BookOpenText className="w-4 h-4" />
-                View API Documentation
+                View Documentation
               </Button>
             </Link>
           </div>
@@ -199,7 +199,7 @@ export default function KeysPage() {
                   <Sparkles className="text-gray-300" size={24} />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-white">Register Artifact API Key</h2>
+                  <h2 className="text-2xl font-bold text-white">Register Artifact</h2>
                   <p className="text-gray-400">Each artifact gets its own API key (visible once)</p>
                 </div>
               </div>
