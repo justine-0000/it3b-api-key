@@ -118,7 +118,7 @@ export default function DocsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-            📖 API Guide
+            📖Guide
           </h1>
           <Link href="/keys">
             <Button
