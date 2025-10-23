@@ -229,14 +229,6 @@ export default function PricingPage() {
                       </div>
                     </div>
                   )}
-                  {isCurrentTier && (
-                    <div className="absolute -top-5 right-6">
-                      <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-xl flex items-center gap-2">
-                        <Check className="w-4 h-4" />
-                        Active Plan
-                      </div>
-                    </div>
-                  )}
 
                   <div className={`w-20 h-20 rounded-3xl bg-gradient-to-br ${tier.color} flex items-center justify-center mb-8 shadow-2xl transform hover:rotate-12 transition-transform duration-300`}>
                     <Icon className="w-10 h-10 text-white" />
