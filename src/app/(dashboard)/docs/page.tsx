@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
-import { KeyRound, BookOpen, Code, Send, Terminal } from "lucide-react";
+import { KeyRound, BookOpen, Code, Send, Terminal, Zap, Lock, Play } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
 import { Input } from "~/components/ui/input";
@@ -102,29 +102,26 @@ export default function DocsPage() {
   if (!isSignedIn) return null;
 
   return (
-    <div 
-      className="min-h-screen relative overflow-hidden"
-      style={{
-        backgroundImage: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      }}
-    >
-      {/* Background overlay */}
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]"></div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+        <div className="absolute top-1/3 -right-48 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-700"></div>
+        <div className="absolute -bottom-48 left-1/3 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
+      </div>
 
-      <div className="space-y-8 relative z-10 p-8">
+      <div className="space-y-8 relative z-10 p-8 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-            📖Guide
-          </h1>
+        <div className="flex items-center justify-between backdrop-blur-sm bg-white/5 p-6 rounded-2xl border border-white/10">
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent flex items-center gap-3">
+              <BookOpen className="h-8 w-8 text-purple-400" />
+              API Documentation
+            </h1>
+            <p className="text-slate-300 mt-2">Interactive guide and testing environment</p>
+          </div>
           <Link href="/keys">
-            <Button
-              variant="outline"
-              className="flex items-center gap-2 rounded-lg border-white/30 bg-white/20 backdrop-blur-md text-base text-white shadow-sm hover:bg-white/30 transition"
-            >
+            <Button className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-purple-500/50 transition-all duration-300 px-6 py-3">
               <KeyRound className="h-5 w-5" />
               Key Dashboard
             </Button>
@@ -132,147 +129,179 @@ export default function DocsPage() {
         </div>
 
         {/* Authentication & Base URL */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* First card */}
-          <Card className="relative bg-white/10 backdrop-blur-md text-white shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl border border-white/20">
-            <div className="relative p-4 rounded-xl">
-              <CardHeader>
-                <CardTitle>How Authentication Works</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <p>
-                  Authenticate using the <code className="px-2 py-1 bg-black/30 rounded text-cyan-200 font-mono text-sm">x-api-key</code> header. Create a
-                  key in <code className="px-2 py-1 bg-black/30 rounded text-cyan-200 font-mono text-sm">/keys</code> and store it securely.
-                </p>
-                <Separator className="bg-white/20" />
-                <div>
-                  <h3 className="font-semibold">Base URL</h3>
-                  <pre className="overflow-x-auto bg-black/30 p-3 rounded-xl mt-2">
-                    <code className="text-cyan-200 text-sm">{baseUrl + "/api"}</code>
-                  </pre>
-                </div>
-              </CardContent>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Authentication Card */}
+          <Card className="bg-gradient-to-br from-purple-900/40 to-slate-900/40 backdrop-blur-md border border-purple-500/30 shadow-2xl hover:shadow-purple-500/30 transition-all duration-500 group">
+            <CardHeader className="border-b border-purple-500/20">
+              <CardTitle className="flex items-center gap-2 text-2xl text-purple-300">
+                <Lock className="h-6 w-6" />
+                Authentication
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 pt-6">
+              <p className="text-slate-300 leading-relaxed">
+                Authenticate requests using the <code className="px-3 py-1 bg-purple-500/20 rounded-lg text-purple-300 font-mono text-sm border border-purple-500/30">x-api-key</code> header. Generate your secure API key from the dashboard.
+              </p>
+              <Separator className="bg-purple-500/20" />
+              <div>
+                <h3 className="font-semibold text-pink-300 mb-3 flex items-center gap-2">
+                  <Terminal className="h-4 w-4" />
+                  Base URL
+                </h3>
+                <pre className="overflow-x-auto bg-slate-950/50 p-4 rounded-xl border border-purple-500/20">
+                  <code className="text-blue-300 text-sm">{baseUrl + "/api"}</code>
+                </pre>
+              </div>
+            </CardContent>
           </Card>
 
-          {/* Second card */}
-          <Card className="relative bg-white/10 backdrop-blur-md text-white shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl border border-white/20">
-            <div className="relative p-4 rounded-xl">
-              <CardHeader>
-                <CardTitle>GET /api/ping</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <pre className="overflow-x-auto text-sm bg-black/30 p-3 rounded-xl">
-                  <code className="text-cyan-200">{`curl -H 'x-api-key: <YOUR_KEY>' \\
+          {/* GET Endpoint Card */}
+          <Card className="bg-gradient-to-br from-blue-900/40 to-slate-900/40 backdrop-blur-md border border-blue-500/30 shadow-2xl hover:shadow-blue-500/30 transition-all duration-500">
+            <CardHeader className="border-b border-blue-500/20">
+              <CardTitle className="flex items-center gap-2 text-2xl text-blue-300">
+                <Code className="h-6 w-6" />
+                GET /api/ping
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 pt-6">
+              <div className="space-y-3">
+                <p className="text-slate-400 text-sm uppercase tracking-wider font-semibold">cURL Example</p>
+                <pre className="overflow-x-auto text-sm bg-slate-950/50 p-4 rounded-xl border border-blue-500/20">
+                  <code className="text-emerald-300">{`curl -H 'x-api-key: <YOUR_KEY>' \\
 ${baseUrl}/api/ping`}</code>
                 </pre>
-                <pre className="overflow-x-auto text-sm bg-black/30 p-3 rounded-xl">
-                  <code className="text-cyan-200">{`const r = await fetch('${baseUrl}/api/ping', {
+              </div>
+              <div className="space-y-3">
+                <p className="text-slate-400 text-sm uppercase tracking-wider font-semibold">JavaScript Example</p>
+                <pre className="overflow-x-auto text-sm bg-slate-950/50 p-4 rounded-xl border border-blue-500/20">
+                  <code className="text-emerald-300">{`const r = await fetch('${baseUrl}/api/ping', {
   headers: { 'x-api-key': process.env.MY_KEY! }
 });`}</code>
                 </pre>
-              </CardContent>
-            </div>
+              </div>
+            </CardContent>
           </Card>
         </div>
 
-        {/* Third card */}
-        <Card className="relative bg-white/10 backdrop-blur-md text-white shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-2xl border border-white/20">
-          <div className="relative p-4 rounded-xl">
-            <CardHeader>
-              <CardTitle>POST /api/echo</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <pre className="overflow-x-auto text-sm bg-black/30 p-3 rounded-xl">
-                <code className="text-cyan-200">{`curl -X POST \\
+        {/* POST Endpoint Card */}
+        <Card className="bg-gradient-to-br from-pink-900/40 to-slate-900/40 backdrop-blur-md border border-pink-500/30 shadow-2xl hover:shadow-pink-500/30 transition-all duration-500">
+          <CardHeader className="border-b border-pink-500/20">
+            <CardTitle className="flex items-center gap-2 text-2xl text-pink-300">
+              <Send className="h-6 w-6" />
+              POST /api/echo
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 pt-6">
+            <div className="space-y-3">
+              <p className="text-slate-400 text-sm uppercase tracking-wider font-semibold">cURL Example</p>
+              <pre className="overflow-x-auto text-sm bg-slate-950/50 p-4 rounded-xl border border-pink-500/20">
+                <code className="text-emerald-300">{`curl -X POST \\
 -H 'x-api-key: <YOUR_KEY>' \\
 -H 'content-type: application/json' \\
 -d '{"hello":"world"}' \\
 ${baseUrl}/api/echo`}</code>
               </pre>
-              <pre className="overflow-x-auto text-sm bg-black/30 p-3 rounded-xl">
-                <code className="text-cyan-200">{`const r = await fetch('${baseUrl}/api/echo', {
+            </div>
+            <div className="space-y-3">
+              <p className="text-slate-400 text-sm uppercase tracking-wider font-semibold">JavaScript Example</p>
+              <pre className="overflow-x-auto text-sm bg-slate-950/50 p-4 rounded-xl border border-pink-500/20">
+                <code className="text-emerald-300">{`const r = await fetch('${baseUrl}/api/echo', {
   method: 'POST',
   headers: { 'x-api-key': process.env.MY_KEY!, 'content-type': 'application/json' },
   body: JSON.stringify({ hello: 'world' })
 });`}</code>
               </pre>
-            </CardContent>
-          </div>
+            </div>
+          </CardContent>
         </Card>
 
         {/* Interactive Tester */}
-        <Card className="relative bg-white/10 backdrop-blur-md text-white shadow-lg overflow-hidden border border-white/20">
-          <div className="relative p-6 rounded-xl space-y-5">
-            <CardHeader>
-              <CardTitle className="text-2xl font-bold tracking-tight">
-                Interactive Tester
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-5 text-lg">
+        <Card className="bg-gradient-to-br from-slate-900/60 to-purple-900/60 backdrop-blur-md border border-purple-400/30 shadow-2xl">
+          <CardHeader className="border-b border-purple-400/20 bg-gradient-to-r from-purple-500/10 to-pink-500/10">
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-blue-300 bg-clip-text text-transparent flex items-center gap-3">
+              <Zap className="h-7 w-7 text-yellow-400" />
+              Interactive API Tester
+            </CardTitle>
+            <p className="text-slate-300 mt-2">Test your API endpoints in real-time</p>
+          </CardHeader>
+          <CardContent className="space-y-6 pt-8">
+            <div className="space-y-2">
+              <Label className="text-slate-300 font-semibold flex items-center gap-2">
+                <KeyRound className="h-4 w-4" />
+                API Key
+              </Label>
               <Input
-                placeholder="Paste your API Key (sk_...)"
+                placeholder="sk_..."
                 value={key}
                 onChange={(e) => setKey(e.target.value)}
-                className="text-lg p-3 rounded-lg bg-white/10 border-white/20 text-white placeholder-white/50"
+                className="text-lg p-4 rounded-xl bg-slate-950/50 border-purple-500/30 text-white placeholder-slate-500 focus:border-purple-400 transition-colors"
               />
+            </div>
 
-              <div className="flex flex-wrap gap-3">
-                <Button 
-                  onClick={runGET} 
-                  className="text-lg px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700"
-                >
-                  Test GET /api/echo
-                </Button>
-                <Button
-                  onClick={runPOST}
-                  variant="secondary"
-                  className="text-lg px-6 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white"
-                >
-                  Test POST /api/echo
-                </Button>
-                <Button 
-                  onClick={runOPTIONS} 
-                  variant={"secondary"}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white"
-                >
-                  Test OPTIONS /api/echo
-                </Button>
-              </div>
+            <div className="flex flex-wrap gap-3">
+              <Button 
+                onClick={runGET} 
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold shadow-lg hover:shadow-emerald-500/50 transition-all duration-300 flex items-center gap-2"
+              >
+                <Play className="h-4 w-4" />
+                GET /api/echo
+              </Button>
+              <Button
+                onClick={runPOST}
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-blue-500/50 transition-all duration-300 flex items-center gap-2"
+              >
+                <Send className="h-4 w-4" />
+                POST /api/echo
+              </Button>
+              <Button 
+                onClick={runOPTIONS} 
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-semibold shadow-lg hover:shadow-pink-500/50 transition-all duration-300 flex items-center gap-2"
+              >
+                <Terminal className="h-4 w-4" />
+                OPTIONS /api/echo
+              </Button>
+            </div>
 
-              <Label className="text-lg font-semibold">POST body (JSON)</Label>
+            <div className="space-y-2">
+              <Label className="text-slate-300 font-semibold">POST Body (JSON)</Label>
               <Textarea
                 rows={5}
                 value={postBody}
                 onChange={(e) => setPostBody(e.target.value)}
-                className="text-base p-4 rounded-lg bg-black/20 border-white/20 text-white font-mono placeholder-white/50"
+                placeholder='{"key": "value"}'
+                className="text-base p-4 rounded-xl bg-slate-950/50 border-purple-500/30 text-white font-mono placeholder-slate-500 focus:border-purple-400 transition-colors"
               />
+            </div>
 
-              <Label className="text-lg font-semibold">Response</Label>
+            <div className="space-y-2">
+              <Label className="text-slate-300 font-semibold">Response Output</Label>
               <Textarea
                 readOnly
                 value={out}
-                className="h-64 resize-y text-base p-4 font-mono rounded-lg bg-black/30 border-white/20 text-cyan-200"
+                placeholder="Response will appear here..."
+                className="h-64 resize-y text-base p-4 font-mono rounded-xl bg-slate-950/70 border-purple-500/30 text-emerald-300 placeholder-slate-600"
                 rows={16}
               />
-            </CardContent>
-          </div>
+            </div>
+          </CardContent>
         </Card>
 
-        <Separator className="my-6 bg-white/20" />
-        <p className="text-center text-white">
-          💡 Tip: Call secured endpoints with the{" "}
-          <code className="rounded bg-black/30 px-2 py-1 text-cyan-200 font-mono text-sm">
-            x-api-key
-          </code>{" "}
-          header. See{" "}
-          <Link
-            href="/keys"
-            className="font-medium underline text-cyan-300 hover:text-cyan-100"
-          >
-            Keys
-          </Link>
-        </p>
+        {/* Footer Tip */}
+        <div className="backdrop-blur-sm bg-gradient-to-r from-purple-500/10 to-pink-500/10 p-6 rounded-2xl border border-purple-400/20">
+          <p className="text-center text-slate-200 text-lg">
+            💡 <span className="font-semibold">Pro Tip:</span> All secured endpoints require the{" "}
+            <code className="rounded-lg bg-purple-500/20 px-3 py-1 text-purple-300 font-mono text-sm border border-purple-500/30 mx-1">
+              x-api-key
+            </code>{" "}
+            header. Manage your keys in the{" "}
+            <Link
+              href="/keys"
+              className="font-semibold underline text-pink-300 hover:text-pink-200 transition-colors"
+            >
+              Key Dashboard
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

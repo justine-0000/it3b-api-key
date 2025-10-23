@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { insertKey, listKeys, revokeKey } from "~/server/key";
+import { canCreateKey, incrementKeyCounter } from "~/server/subscription";
 import { CreateKeySchema, DeleteKeySchema } from "~/server/validation";
 
 // --------------------
@@ -51,14 +53,39 @@ export async function GET(req: Request) {
 }
 
 // --------------------
-// POST: Create a new artifact + key
+// POST: Create a new artifact + key (WITH LIMIT CHECK)
 // --------------------
 export async function POST(req: Request) {
   try {
+    // Get authenticated user
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check if user can create a key (daily limit)
+    const canCreate = await canCreateKey(userId);
+    if (!canCreate.allowed) {
+      return NextResponse.json(
+        { 
+          error: canCreate.reason,
+          current: canCreate.current,
+          limit: canCreate.limit,
+          tier: canCreate.tier,
+        },
+        { status: 429 } // Too Many Requests
+      );
+    }
+
+    // Parse and validate request body
     const body = await req.json();
     const { name, period, origin, value, imageUrl } = CreateKeySchema.parse(body);
 
+    // Create the key
     const created = await insertKey({ name, period, origin, value, imageUrl });
+
+    // Increment the daily counter
+    await incrementKeyCounter(userId);
 
     return NextResponse.json(created, { status: 201 });
   } catch (err: unknown) {
